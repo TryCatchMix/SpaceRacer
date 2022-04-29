@@ -31,14 +31,9 @@ public class EscenarioJuego extends Escenario{
         //Queremos que los asteroides aparezcan en una posicion aleatoria en el ejeX y que aparezca arriba por fuera de la pantalla.
         asteroide = new Obstaculo((float) Math.random()*this.iAnchoPant,this.iAltoPant+10, dibujoAsteroides);
 
-        //Contador de Puntos
-        /*PanelNumeros puntuacion = new Texture(new Texture(""));
-        puntuacion = new PanelNumeros(0,0,10);*/
-
         //Añadimos nuestros objetos a la ArrayList heredada de Escenario
         misObjetosEnPantalla.add(miNave);
         misObjetosEnPantalla.add(asteroide);
-        //misObjetosEnPantalla.add(puntuacion);
     }
 
 }

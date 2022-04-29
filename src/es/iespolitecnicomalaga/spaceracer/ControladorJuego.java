@@ -63,6 +63,17 @@ public class ControladorJuego {
     //Camara para tener en Android la misma resolución que en el Desktop
     private OrthographicCamera camera;
 
+    //Declaramos la puntuacion para que aparezca en los escenarios
+    private PanelNumeros puntuacion;
+
+    //Para que siempre guarde el mismo espacio con el borde aunque aumente la puntuacion
+    private int tamañoPuntuacionMostradaActual = 1;
+
+    //Tamaño constante de los digitos de la puntuacion
+    private final int tamañoDigitosPuntuacion=30;
+
+    //Tendremos un SpriteBatch para dibujar en la pantalla
+    protected SpriteBatch batch;
 
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -80,6 +91,12 @@ public class ControladorJuego {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, PANTALLA_ANCHO, PANTALLA_ALTO);
         escenaInicio = new EscenarioInicio(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
+        batch = new SpriteBatch();
+
+
+        //Inicializamos la puntuacion y la posicionamos en la escena
+        puntuacion = new PanelNumeros(PANTALLA_ANCHO - tamañoDigitosPuntuacion,PANTALLA_ALTO - tamañoDigitosPuntuacion,tamañoDigitosPuntuacion);
+        puntuacion.setData(100);
 
         //ESTO ELIMINAR
         escenaJuego = escenaInicio;
@@ -91,7 +108,6 @@ public class ControladorJuego {
         escenaActiva = escenaInicio;
         miEstadoJuego = EstadoJuego.PANTALLA_INICIO;
         Gdx.input.setInputProcessor(escenaActiva);
-
     }
 
     public static ControladorJuego getSingleton() {
@@ -111,6 +127,27 @@ public class ControladorJuego {
         //Ahora renderizo según la escena Activa
         escenaActiva.render();
 
+        //Se inicia el batch
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        //Con esto hacemos que solo aparezca la puntuacion en la EscenaJuego.
+        //*******Ahora mismo esta comentado para que podamos verla ya que aun no esta terminada la
+        //EscenaJuego********//
+
+        /*if(escenaActiva == escenaJuego)*/
+
+        //Aqui conseguimos que la puntuacion siempre respete el espacio con el borde de la pantalla
+        //por mucho que aumente las cifras
+        if(puntuacion.listaMostrada.size() > tamañoPuntuacionMostradaActual)
+        {
+            tamañoPuntuacionMostradaActual = puntuacion.listaMostrada.size();
+            puntuacion.fPosX = PANTALLA_ANCHO - (tamañoPuntuacionMostradaActual * tamañoDigitosPuntuacion);
+        }
+
+        puntuacion.pintarse(batch);
+
+        batch.end();
     }
 
     //El controlador tendrá que saber como finalizar y cerrar recursos
@@ -119,7 +156,7 @@ public class ControladorJuego {
          escenaJuego.dispose();
          escenaInicio.dispose();
          escenaFinPartida.dispose();
-
+         puntuacion.dispose();
     }
 
     public void cambiarEscena(EstadoJuego nuevoEstado) {
