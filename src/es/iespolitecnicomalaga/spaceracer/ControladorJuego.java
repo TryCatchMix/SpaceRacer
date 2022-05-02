@@ -45,15 +45,8 @@ public class ControladorJuego {
 
     //Escenas
     protected EscenarioInicio escenaInicio;
-
-    //ESTO ELIMINAR
-    protected EscenarioInicio escenaJuego;
-    protected EscenarioInicio escenaFinPartida;
-
-
-    //ESTO DESCOMENTAR
-    //protected EscenarioJuego escenaJuego;
-    //protected EscenarioFinal escenaFinPartida;
+    protected EscenarioJuego escenaJuego;
+    protected EscenarioFinal escenaFinPartida;
 
     protected Escenario escenaActiva;
 
@@ -99,12 +92,12 @@ public class ControladorJuego {
         puntuacion.setData(100);
 
         //ESTO ELIMINAR
-        escenaJuego = escenaInicio;
-        escenaFinPartida = escenaJuego;
+        //escenaJuego = escenaInicio;
+        //escenaFinPartida = escenaJuego;
 
         //ESTO DESCOMENTAR
-        //escenaJuego = new EscenarioJuego(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
-        //escenaFinPartida = new EscenarioFinPartida(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
+        escenaJuego = new EscenarioJuego(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
+        escenaFinPartida = new EscenarioFinal(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
         escenaActiva = escenaInicio;
         miEstadoJuego = EstadoJuego.PANTALLA_INICIO;
         Gdx.input.setInputProcessor(escenaActiva);
@@ -153,10 +146,10 @@ public class ControladorJuego {
     //El controlador tendrá que saber como finalizar y cerrar recursos
     public void dispose() {
 
-         escenaJuego.dispose();
-         escenaInicio.dispose();
-         escenaFinPartida.dispose();
-         puntuacion.dispose();
+        escenaJuego.dispose();
+        escenaInicio.dispose();
+        escenaFinPartida.dispose();
+        puntuacion.dispose();
     }
 
     public void cambiarEscena(EstadoJuego nuevoEstado) {
@@ -174,4 +167,3 @@ public class ControladorJuego {
         Gdx.input.setInputProcessor(escenaActiva);
     }
 }
-

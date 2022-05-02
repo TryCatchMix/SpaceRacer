@@ -15,6 +15,7 @@ public class NavesAliadas extends NaveEspacial {
 
     static private final float VELOCIDAD_INICIAL_Y = 0.0f;
     static private final float VELOCIDAD_INICIAL_X = 0.0f;
+    int i = 0;
 
     //Ancho de la pantalla, para no movernos fuera...
     private int anchoPant;
@@ -32,6 +33,19 @@ public class NavesAliadas extends NaveEspacial {
     public NavesAliadas(float nuevaPosX,float nuevaPosY, int anchoPantalla, Dibujable miDibujoNormal, Dibujable miDibujoExplosion) {
         super(nuevaPosX, nuevaPosY, VELOCIDAD_INICIAL_X, VELOCIDAD_INICIAL_Y, miDibujoNormal, miDibujoExplosion);
         anchoPant = anchoPantalla;
+    }
+
+    //Esto se deberá cambiar para que muera cuando choque contra un asteroide, por ahora muere cada 10 segundos si descomentas
+    public boolean estoyMuerto(){
+        /*
+        i++;
+        if (i == 600){
+            i = 0;
+            return true;
+        }
+        return false;
+        */
+        return false;
     }
 
     //Resto de comportamiento
