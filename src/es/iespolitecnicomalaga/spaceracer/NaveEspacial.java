@@ -66,7 +66,7 @@ public class NaveEspacial extends ObjetoVolador {
         }
     }
 
-
+    //Con esto la nave explota y aparece la imagen y el sonido
     public void explota() {
         explotar = true;
         sonidoExplotar.play();

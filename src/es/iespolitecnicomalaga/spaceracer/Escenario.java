@@ -25,6 +25,7 @@ public class Escenario extends InputAdapter {
     ArrayList<ObjetoVolador> misObjetosEnPantalla;
     ParallaxEscena miPE;
 
+
     //COMPORTAMIENTO
 
     public Escenario(int iAnchoPant, int iAltoPant, Lienzo miLienzo, Camera miCamara) {
@@ -66,7 +67,8 @@ public class Escenario extends InputAdapter {
         miPE.render(lienzoEscena);
         //pintamos los objetos sin más
         for (ObjetoVolador miOV:misObjetosEnPantalla) {
-            miOV.pintarse(lienzoEscena);
+            if(miOV.img != null)
+                miOV.pintarse(lienzoEscena);
         }
 
         lienzoEscena.end();

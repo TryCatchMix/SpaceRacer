@@ -1,11 +1,13 @@
 package es.iespolitecnicomalaga.spaceracer;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import javax.naming.ldap.Control;
@@ -56,17 +58,21 @@ public class ControladorJuego {
     //Camara para tener en Android la misma resolución que en el Desktop
     private OrthographicCamera camera;
 
-    //Declaramos la puntuacion para que aparezca en los escenarios
-    private PanelNumeros puntuacion;
-
     //Para que siempre guarde el mismo espacio con el borde aunque aumente la puntuacion
-    private int tamañoPuntuacionMostradaActual = 1;
+    public static int tamañoPuntuacionMostradaActual = 1;
 
     //Tamaño constante de los digitos de la puntuacion
-    private final int tamañoDigitosPuntuacion=30;
+    public static final int tamañoDigitosPuntuacion=30;
+
+    //Declaramos astronauta
+    private Astronauta astronauta;
 
     //Tendremos un SpriteBatch para dibujar en la pantalla
     protected SpriteBatch batch;
+
+    //Música del juego
+    Music musicaJuego;
+    Music musicaFinal;
 
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -85,11 +91,11 @@ public class ControladorJuego {
         camera.setToOrtho(false, PANTALLA_ANCHO, PANTALLA_ALTO);
         escenaInicio = new EscenarioInicio(PANTALLA_ANCHO,PANTALLA_ALTO,miLienzo,camera);
         batch = new SpriteBatch();
+        musicaJuego = Gdx.audio.newMusic(Gdx.files.internal("musicaJuego.ogg"));
+        musicaFinal = Gdx.audio.newMusic(Gdx.files.internal("perder.mp3"));
 
 
-        //Inicializamos la puntuacion y la posicionamos en la escena
-        puntuacion = new PanelNumeros(PANTALLA_ANCHO - tamañoDigitosPuntuacion,PANTALLA_ALTO - tamañoDigitosPuntuacion,tamañoDigitosPuntuacion);
-        puntuacion.setData(100);
+
 
         //ESTO ELIMINAR
         //escenaJuego = escenaInicio;
@@ -128,18 +134,18 @@ public class ControladorJuego {
         //*******Ahora mismo esta comentado para que podamos verla ya que aun no esta terminada la
         //EscenaJuego********//
 
-        /*if(escenaActiva == escenaJuego)*/
+        if(escenaActiva == escenaJuego || escenaActiva == escenaFinPartida){
 
-        //Aqui conseguimos que la puntuacion siempre respete el espacio con el borde de la pantalla
-        //por mucho que aumente las cifras
-        if(puntuacion.listaMostrada.size() > tamañoPuntuacionMostradaActual)
-        {
-            tamañoPuntuacionMostradaActual = puntuacion.listaMostrada.size();
-            puntuacion.fPosX = PANTALLA_ANCHO - (tamañoPuntuacionMostradaActual * tamañoDigitosPuntuacion);
+            //Aqui conseguimos que la puntuacion siempre respete el espacio con el borde de la pantalla
+            //por mucho que aumente las cifras
+            if(escenaJuego.puntuacion.listaMostrada.size() > tamañoPuntuacionMostradaActual)
+            {
+                tamañoPuntuacionMostradaActual = escenaJuego.puntuacion.listaMostrada.size();
+                escenaJuego.puntuacion.fPosX = PANTALLA_ANCHO - (tamañoPuntuacionMostradaActual * tamañoDigitosPuntuacion);
+            }
+            escenaJuego.puntuacion.pintarse(batch);
+
         }
-
-        puntuacion.pintarse(batch);
-
         batch.end();
     }
 
@@ -149,21 +155,39 @@ public class ControladorJuego {
         escenaJuego.dispose();
         escenaInicio.dispose();
         escenaFinPartida.dispose();
-        puntuacion.dispose();
+        escenaJuego.puntuacion.dispose();
+
+        if (astronauta!=null){
+            astronauta.dispose();
+        }
+
     }
 
     public void cambiarEscena(EstadoJuego nuevoEstado) {
         miEstadoJuego = nuevoEstado;
         switch (miEstadoJuego) {
             case JUGANDO: escenaActiva = escenaJuego;
+            musicaJuego.play();
                 break;
             case PANTALLA_INICIO: escenaActiva = escenaInicio;
                 break;
             case FINAL_PARTIDA: escenaActiva = escenaFinPartida;
+            musicaFinal.play();
                 break;
         }
 
         //Importante, el control de los eventos de entrada, lo toma la escenaActiva en este momento
         Gdx.input.setInputProcessor(escenaActiva);
     }
-}
+
+    //Con esto reiniciamos la partida
+    public void reiniciarPartida()
+    {
+        escenaJuego.reiniciarAEstadoInicial();
+    }
+
+
+    public void paramusicaJuego(){
+    musicaJuego.stop();
+
+}}

@@ -11,6 +11,8 @@ public class EscenarioInicio extends Escenario {
     //Aquí definimos los objetos que estarán en la ventana inicial
     NavesAliadas miNave;
     Mando miMando;
+    ObjetoVolador TFront;
+    ObjetoVolador TBack;
 
 
     //COMPORTAMIENTO
@@ -24,6 +26,19 @@ public class EscenarioInicio extends Escenario {
         //Ahora ponemos aquí objetos y los añadimos al contenedor (arraylist) heredado de nuestro padre
 
         //Nave principal
+        //Titulo principal
+        Dibujable DibujoFront = new DibujableAdaptador(new Texture("sp_front.png"));
+        TFront = new ObjetoVolador(this.iAnchoPant/2, this.iAltoPant/2, 1.2f, 1.0f, DibujoFront);
+
+        //Fondo
+        Dibujable DibujoBack = new DibujableAdaptador(new Texture("sp_back.png"));
+        TBack = new ObjetoVolador(this.iAnchoPant/2, this.iAltoPant/2, 0, 0, DibujoBack);
+
+        misObjetosEnPantalla.add(TBack);
+        misObjetosEnPantalla.add(TFront);
+
+
+
         Dibujable miDibujoNormal = new DibujableAdaptador(new Texture("aliada5azul.png"));
         Dibujable miExplosion = new DibujableAdaptador(new Texture("explosion.png"));
         miNave = new NavesAliadas(this.iAnchoPant/2,this.iAltoPant/8,this.iAnchoPant,miDibujoNormal,miExplosion);
@@ -51,7 +66,7 @@ public class EscenarioInicio extends Escenario {
 
         //Aquí debemos de animar los objetos: moverlos. Controlar las colisiones. Controlar si hemos finalizado, sumar puntos
         //La escena parallax
-        //miPE.animar();
+        miPE.animar();
     }
 
     @Override

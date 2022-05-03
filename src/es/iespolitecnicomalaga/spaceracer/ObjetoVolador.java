@@ -109,7 +109,6 @@ public class ObjetoVolador {
         velY = newVel;
     }
 
-    public void dispose() {
-        this.img.dispose();
+    public void dispose() { this.img.dispose();
     }
 }

@@ -19,7 +19,7 @@ public class GdxGameSpaceRacer extends ApplicationAdapter {
 	public void render () {
 		vgControlador.render();
 	}
-	
+
 	@Override
 	public void dispose () {
 		vgControlador.dispose();

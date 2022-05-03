@@ -10,6 +10,8 @@ public class EscenarioFinal extends Escenario {
 
     //Aquí definimos los objetos que estarán en la ventana inicial
     NavesAliadas miNave;
+    Mando miMando;
+    ObjetoVolador GameOver;
 
 
     //COMPORTAMIENTO
@@ -27,14 +29,18 @@ public class EscenarioFinal extends Escenario {
         Dibujable miExplosion = new DibujableAdaptador(new Texture("explosion.png"));
         miNave = new NavesAliadas(this.iAnchoPant/2,this.iAltoPant/8,this.iAnchoPant,miDibujoNormal,miExplosion);
 
+        //Game Over
+        Dibujable DibujoGO = new DibujableAdaptador(new Texture("gameover.png"));
+        GameOver = new ObjetoVolador(this.iAnchoPant/2, this.iAltoPant/2, 0, 0, DibujoGO);
         misObjetosEnPantalla.add(miNave);
+        misObjetosEnPantalla.add(GameOver);
+
+        misObjetosEnPantalla.add(miNave);
+        miMando = new Mando();
         //Aquí ponemos más objetos que se pintarán al principio.
         //...
 
-        //Y por último la música de este escenario
-        //miMusica = Gdx.audio.newMusic(Gdx.files.internal("intro.ogg"));
-        //miMusica.setLooping(true);
-        //miMusica.play();
+
 
     }
 
@@ -49,18 +55,19 @@ public class EscenarioFinal extends Escenario {
 
         //Aquí debemos de animar los objetos: moverlos. Controlar las colisiones. Controlar si hemos finalizado, sumar puntos
         //La escena parallax
-        //miPE.animar();
+        miPE.animar();
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //¿Qué pasa si pulsan la pantalla, pues que nos vamos a la pantalla del juego... Hay que notificar al controlador
         //principal para que cambie el escenario
-        //miMusica.stop();
+
 
 
 
         //CON ESTO SE CAMBIAAAAAAAAAAAAAAAAAA DE ESCENAAAAAAAAAAAAAAAAAAA
+        ControladorJuego.getSingleton().reiniciarPartida();
         ControladorJuego.getSingleton().cambiarEscena(ControladorJuego.EstadoJuego.JUGANDO);
         return super.touchDown(screenX, screenY, pointer, button);
     }
@@ -69,4 +76,5 @@ public class EscenarioFinal extends Escenario {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return super.touchUp(screenX, screenY, pointer, button);
     }
+
 }
